@@ -5,4 +5,4 @@
 # When running implicit ALS
 # export OPENBLAS_NUM_THREADS=1
 
-konsole -e "jupyter notebook notebooks"
+konsole -e "jupyter notebook notebooks --ip 0.0.0.0"
