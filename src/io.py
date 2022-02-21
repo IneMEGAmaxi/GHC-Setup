@@ -11,8 +11,13 @@ def parse_list(line):
 
 
 def write_list(l):
-
-    pass
+    """ Input: list of ingredients that go on the pizza
+    Outputs formatted string """
+    nr_ingr = len(l)
+    list_ingredients = str(nr_ingr) + ' '
+    for i in range(nr_ingr):
+        list_ingredients += l[i] + ' '
+    return list_ingredients
 
 
 def parse_problem(path):
@@ -58,19 +63,21 @@ def list_of_lists_to_matrix(lol, uniques: List):
         row_index.extend([col] * len(indices))
 
     data = np.ones(len(row_index))
-    print(data)
-    print(row_index)
-    print(col_index)
+    # print(data)
+    # print(row_index)
+    # print(col_index)
     return scipy.sparse.csr_matrix((data, (row_index, col_index)), shape=(m, n))
 
 
 def vector_to_list(v, uniques):
     """ Converts a single binary vector back to a list of items according to index of uniques """
-    pass
+    indices = v.nonzero()[0]
+    return [uniques[i] for i in indices]
 
 
 def write_solution(solution, path):
+    """ Writes the solution to new file
+    Solution = type list """
     output = write_list(solution)
-    with open(path, mode='x') as f:
+    with open(path, mode='w') as f:
         f.write(output)
-        pass
