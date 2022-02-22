@@ -16,6 +16,9 @@ class Solution:
         # TODO: Change
         self.s = np.zeros(len(problem.ingredients))
 
+    def __str__(self):
+        return str(self.s)
+
     def copy(self):
         ret = Solution(self.problem)
         # TODO: Change

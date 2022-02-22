@@ -14,6 +14,9 @@ class Problem:
         self.likes = likes
         self.dislikes = dislikes
 
+    def __str__(self):
+        return f"likes: {str(self.likes)} \ndislikes: {str(self.dislikes)}"
+
     def new_solution(self):
         return solution.Solution(self)
 

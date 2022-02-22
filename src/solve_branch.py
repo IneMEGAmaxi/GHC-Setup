@@ -8,11 +8,11 @@ from .problem import Problem
 from.solution import Solution
 
 
-""" Look into most promising branches first to find good lower bound on best solution,
-prune solutions that can't get there.
-This reduces to greedy search if stopped early.
- """
-
+"""
+Idea for branch and bound: look into most promising branches first to find good lower bound on best solution,
+prune solutions that can't get there anymore. (this reduces to greedy search if stopped early)
+Note: this implementation also has some local search in it.
+"""
 
 sys.setrecursionlimit(10000)
 

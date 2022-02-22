@@ -4,6 +4,7 @@ import sys
 from src.problem import Problem
 from src import solve_random
 from src import solve_branch
+from src import solve_local
 
 from typer import Typer
 import typer
@@ -32,6 +33,13 @@ def random(filename: Path = ExistingFile, sol_limit: int = 20, stuck_limit: int 
 def branchbound(filename: Path = ExistingFile):
     problem = Problem.parse(filename)
     solution = solve_branch.solve(problem)
+    solution.write()
+
+
+@app.command()
+def local(filename: Path = ExistingFile):
+    problem = Problem.parse(filename)
+    solution = solve_local.solve(problem)
     solution.write()
 
 

@@ -64,7 +64,7 @@ def sol1(p: Problem, sol_limit, stuck_limit):
                 break
     except KeyboardInterrupt as e:
         print("stopping iteration")
-        
+
     s = max(solutions, key=lambda x: x[1])[0]
     print("final score", s.compute_score())
     return s
