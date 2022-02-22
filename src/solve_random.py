@@ -3,17 +3,17 @@ import random
 import numpy as np
 
 from . import util
-from .solve import count_happy_customer
+
+from .problem import Problem
+from .solution import Solution
+
 
 """ Try random permutations in a somewhat smart way """
 
 
-def solve(likes, dislikes, sol_limit=20, stuck_limit=1000):
-    uniques = list(util.unique_entries_multiple(likes, dislikes))
-    L = util.list_of_lists_to_matrix(likes, uniques)
-    D = util.list_of_lists_to_matrix(dislikes, uniques)
-    s = sol1(L, D, uniques, sol_limit, stuck_limit)
-    return util.vector_to_list(s, uniques)
+def solve(problem, sol_limit=20, stuck_limit=1000):
+    s = sol1(problem, sol_limit, stuck_limit)
+    return s
 
 
 def sample_candidate(solutions):
@@ -21,9 +21,9 @@ def sample_candidate(solutions):
     return random.choices(ss, [c for c in cc], k=1)[0]
 
 
-def sol1(L, D, uniques, sol_limit, stuck_limit):
-    s = np.zeros(len(uniques))
-    c = count_happy_customer(L, D, s)
+def sol1(p: Problem, sol_limit, stuck_limit):
+    s = p.new_solution()
+    c = s.compute_score()
 
     solutions = [(s, c)]
 
@@ -35,11 +35,11 @@ def sol1(L, D, uniques, sol_limit, stuck_limit):
             # print("s", s)
             s = s.copy()
 
-            bit = random.randint(0, s.shape[0]-1)
-            s[bit] = 1 if s[bit] == 0 else 0
+            bit = random.randint(0, s.s.shape[0]-1)
+            s.s[bit] = 1 if s.s[bit] == 0 else 0
             # print()
 
-            c = count_happy_customer(L, D, s)
+            c = s.compute_score()
             # print("new_c", new_c)
 
             solutions.append((s, c))
@@ -62,7 +62,9 @@ def sol1(L, D, uniques, sol_limit, stuck_limit):
 
             if stuck >= stuck_limit:
                 break
-    finally:
-        s = max(solutions, key=lambda x: x[1])[0]
-        print("final score", count_happy_customer(L, D, s))
-        return s
+    except KeyboardInterrupt as e:
+        print("stopping iteration")
+        
+    s = max(solutions, key=lambda x: x[1])[0]
+    print("final score", s.compute_score())
+    return s

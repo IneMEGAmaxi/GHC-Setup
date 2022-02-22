@@ -1,8 +1,7 @@
 from pathlib import Path
 import sys
 
-import src.io as io
-import src.solve as solve
+from src.problem import Problem
 from src import solve_random
 from src import solve_branch
 
@@ -21,20 +20,19 @@ ExistingFile = typer.Argument(
 
 app = Typer()
 
-OUTPUT_DIR = Path('output')
 
 @app.command()
 def random(filename: Path = ExistingFile, sol_limit: int = 20, stuck_limit: int = 1000):
-    problem = io.parse_problem(filename)
-    solution = solve_random.solve(*problem, sol_limit=sol_limit, stuck_limit=stuck_limit)
-    io.write_solution(solution, OUTPUT_DIR / Path(filename).name.replace('.in', '.out'))
+    problem = Problem.parse(filename)
+    solution = solve_random.solve(problem, sol_limit=sol_limit, stuck_limit=stuck_limit)
+    solution.write()
 
 
 @app.command()
 def branchbound(filename: Path = ExistingFile):
-    problem = io.parse_problem(filename)
-    solution = solve_branch.solve(*problem)
-    io.write_solution(solution, OUTPUT_DIR / Path(filename).name.replace('.in', '.out'))
+    problem = Problem.parse(filename)
+    solution = solve_branch.solve(problem)
+    solution.write()
 
 
 app()
