@@ -2,20 +2,21 @@ from functools import lru_cache
 
 from . import io
 from . import util
+from .worker import Worker
+from .project import Project
 
 import src.solution as solution
 
 
 class Problem:
-    def __init__(self, path, likes, dislikes):
+    def __init__(self, path, workers, projects):
         self.path = path
 
-        # TODO: Change
-        self.likes = likes
-        self.dislikes = dislikes
+        self.workers = workers
+        self.projects = projects
 
     def __str__(self):
-        return f"likes: {str(self.likes)} \ndislikes: {str(self.dislikes)}"
+        return f"workers: {str(self.workers)} \nprojects: {str(self.projects)}"
 
     def new_solution(self):
         return solution.Solution(self)
@@ -38,14 +39,31 @@ class Problem:
     @staticmethod
     def parse(path):
         # TODO: Change
-        customer_likes = list()
-        customer_dislikes = list()
+        workers = list()
+        projects = list()
         with open(path) as f:
-            customers = int(f.readline())
-            for c in range(customers):
-                customer_likes.append(io.parse_list(f.readline()))
-                customer_dislikes.append(io.parse_list(f.readline()))
+            worker_count, project_count = io.parse_ints(f.readline())
+
+            # Workers / Contributors
+            for c in range(worker_count):
+                name, skill_count = io.parse_name_int(f.readline())
+                w = Worker(name)
+                for s in range(skill_count):
+                    name, level = io.parse_name_int(f.readline())
+                    w.skills[name] = level
+
+                workers.append(w)
+
+            for p in range(project_count):
+                name, (days, max_score, best_before, role_count) = io.parse_name_ints(f.readline())
+                project = Project(name, days, max_score, best_before)
+                for r in range(role_count):
+                    role, level = io.parse_name_int(f.readline())
+                    project.addRole(role, level)
+
+                projects.append(project)
+
             while line := f.readline():
                 print("extra line", line.strip())
 
-        return Problem(path, customer_likes, customer_dislikes)
+        return Problem(path, workers, projects)

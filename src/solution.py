@@ -14,10 +14,11 @@ class Solution:
         self.problem = problem
 
         # TODO: Change
-        self.s = np.zeros(len(problem.ingredients))
+        # list of SolvedProjects
+        self.completed = list()
 
     def __str__(self):
-        return str(self.s)
+        return str(self.completed)
 
     def copy(self):
         ret = Solution(self.problem)
@@ -40,21 +41,19 @@ class Solution:
 
     def compute_score(self):
         # TODO: Change
-        ingred = self.problem.L @ self.s
-        wanted = np.asarray(self.problem.L.sum(axis=1)).flatten()
-        disliked = self.problem.D @ self.s
-        correct = np.logical_and(ingred == wanted, disliked == 0)
-        return correct.sum()
+        pass
 
     def write(self, path=None):
         """ Writes the solution to new file """
         if path is None:
             path = self.solution_path
 
-        # TODO: Change
         with open(path, mode='w') as f:
-            pizza = io.list_to_str(self.ingredients_list)
-            f.write(pizza + '\n')
+            f.write(str(len(self.completed))+'/n')
+            for proj in self.completed:
+                f.write(proj.project.name+'/n')
+                for role in proj.roles:
+                    f.write(proj.role_assignment[role]+' ')
 
 
 import src.problem as problem
