@@ -3,6 +3,63 @@ import numpy as np
 
 import scipy.sparse
 
+## statistics
+
+from .project import Project
+
+
+def max_time(project: Project):
+    max_t = project.best_before + project.max_score
+    return max_t
+
+def max_runtime(problem: 'problem.Problem'):
+    time = []
+    for proj in problem.projects:
+        time.append(max_time(proj))
+    return max(time)
+
+def min_timestep(problem: 'problem.Problem'):
+    time = []
+    for proj in problem.projects:
+        time.append(proj.days_to_complete)
+    return min(time)
+
+def get_unique_skills(problem: 'problem.Problem'):
+    unique_skills = set()
+    for w in problem.workers:
+        unique_skills.update(w.skills.keys())
+    for pr in problem.projects:
+        unique_skills.update(pr.roles)
+    return unique_skills
+
+def level_needed_per_skill(problem: 'problem.Problem'):
+    lvl_per_skill = {}
+    for u_skill in get_unique_skills(problem):
+        level = 0
+        for pr in problem.projects:
+            try:
+                index = pr.roles.index(u_skill)
+                lvl = pr.levels[index]
+                if lvl > level:
+                    level = lvl
+                    lvl_per_skill.update({u_skill:level})
+            except:
+                pass
+    return lvl_per_skill
+
+def max_level_per_skill(problem):
+    lvl_per_skill = {}
+    for u_skill in get_unique_skills(problem):
+        level = 0
+        for w in problem.workers:
+            try:
+                lvl = w.skills[u_skill]
+                if lvl > level:
+                    level = lvl
+                    lvl_per_skill.update({u_skill:level})
+            except:
+                pass
+    return lvl_per_skill
 #################################
 #   List of List <-> Matrix     #
 #################################
@@ -117,3 +174,6 @@ class Node:
         dot.node(self.name)
         for other, data in self.outgoing.items():
             dot.edge(self.name, other.name, str(data))
+
+
+from src import problem

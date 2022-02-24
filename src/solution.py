@@ -49,11 +49,12 @@ class Solution:
             path = self.solution_path
 
         with open(path, mode='w') as f:
-            f.write(str(len(self.completed))+'/n')
+            f.write(str(len(self.completed))+'\n')
             for proj in self.completed:
-                f.write(proj.project.name+'/n')
-                for role in proj.roles:
-                    f.write(proj.role_assignment[role]+' ')
+                f.write(proj.project.name+'\n')
+                for worker in proj.role_assignment:
+                    f.write(worker.name + ' ')
+                f.write('\n')
 
 
 import src.problem as problem

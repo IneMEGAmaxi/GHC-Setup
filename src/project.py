@@ -19,7 +19,12 @@ class Project:
         return zip(self.roles, self.levels)
 
     def scoreIfStartedOn(self, timestamp):
+
+        #TODO: IMPROVE HEURISTIC
         overtime = self.best_before - (timestamp + self.days_to_complete) + 1
+        for lvl in self.levels:
+            overtime = overtime - lvl
+        overtime = overtime - self.best_before / 1000
         return max(0, self.max_score - overtime)
 
     def __str__(self):
@@ -35,9 +40,11 @@ class Project:
 
 
 class SolvedProject:
-    def __init__(self, project, role_assignment: dict, start_day):
+    def __init__(self, project, start_day):
         self.project = project
-        self.role_assignment = role_assignment
+
+        # list of role assignment with same order as project.roles
+        self.role_assignment = list()
+
         self.start_day = start_day
-        self.end_day = start_day + self.project.days_to_complete -1
-        pass
+        self.end_day = start_day + self.project.days_to_complete - 1

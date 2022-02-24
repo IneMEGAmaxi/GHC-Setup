@@ -1,4 +1,5 @@
 
+
 class Worker:
 
     def __init__(self, name):
@@ -9,7 +10,7 @@ class Worker:
         return self.name + ": "+str(self.skills)
 
     def __repr__(self):
-        return str(self)
+        return self.name
 
 
 def get_workers(workers, skill, minimal_lvl, ideal_level = -1):
@@ -20,12 +21,12 @@ def get_workers(workers, skill, minimal_lvl, ideal_level = -1):
     return out
 
 
-if __name__ == '__main__':
-    w = Worker("tim")
-    w.skills = {"html":3, "cpp": 2}
-    j = Worker("Joey")
-    j.skills = {"ai dingen": 8, "python": 5}
-
-    print(get_workers([j, w], "ai dingen", 3))
+# if __name__ == '__main__':
+#     w = Worker("tim")
+#     w.skills = {"html":3, "cpp": 2}
+#     j = Worker("Joey")
+#     j.skills = {"ai dingen": 8, "python": 5}
+#
+#     print(get_workers([j, w], "ai dingen", 3))
 
 
