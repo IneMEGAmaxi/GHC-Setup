@@ -28,6 +28,7 @@ class Project:
         # optimise score increase: max score per time invested
         opt = self.scoreIfStarted(timestamp)/self.days_to_complete
         # slight preference for projects completed close to/ after deadline
+        #TODO preference for project with high number of contributers?
         a = 10 #TODO Tune parameter
         days_left = self.best_before - (timestamp + self.days_to_complete -1)
         opt -= days_left/a
