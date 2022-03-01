@@ -18,14 +18,23 @@ class Project:
     def roleLevels(self):
         return zip(self.roles, self.levels)
 
-    def scoreIfStartedOn(self, timestamp):
+    def scoreIfStarted(self, timestamp):
+        penalty = timestamp + self.days_to_complete - 1 - self.best_before
+        if penalty < 0:
+            penalty = 0
+        return max(0, self.max_score - penalty)
 
+    def heuristic(self, timestamp):
+        # optimise score increase: max score per time invested
+        opt = self.scoreIfStarted(timestamp)/self.days_to_complete
+        # slight preference for projects completed close to/ after deadline
+        a = 10 #TODO Tune parameter
+        days_left = self.best_before - (timestamp + self.days_to_complete -1)
+        opt -= days_left/a
+        return opt
         #TODO: IMPROVE HEURISTIC
-        overtime = self.best_before - (timestamp + self.days_to_complete) + 1
-        for lvl in self.levels:
-            overtime = overtime - lvl
-        overtime = overtime - self.best_before / 1000
-        return max(0, self.max_score - overtime)
+        #for lvl in self.levels:
+        #   overtime = overtime - lvl
 
     def __str__(self):
         return self.name + \

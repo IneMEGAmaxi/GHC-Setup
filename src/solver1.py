@@ -117,7 +117,7 @@ def solve(problem: Problem):
                         worker.skills[role] = level + 1
 
         # looking to start new projects
-        promising_projects = list(sorted(projects, key=lambda item: item.scoreIfStartedOn(timestamp), reverse=True))[:200]
+        promising_projects = list(sorted(projects, key=lambda item: item.heuristic(timestamp), reverse=True))[:200]
 
         # print("workers", worker_pool)
 
@@ -144,7 +144,7 @@ def solve(problem: Problem):
                 in_progress_projects.append(pp)
                 projects.remove(project)
 
-        maxPossibleScore = max(p.scoreIfStartedOn(timestamp) for p in promising_projects)
+        maxPossibleScore = max(p.scoreIfStarted(timestamp) for p in promising_projects)
         if maxPossibleScore == 0:
             print("no more promising projects with score > 0")
             break
