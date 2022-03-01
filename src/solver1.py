@@ -117,6 +117,7 @@ def solve(problem: Problem):
                         worker.skills[role] = level + 1
 
         # looking to start new projects
+        #TODO only list promising projects IF level needed for each skill (-1) is available
         promising_projects = list(sorted(projects, key=lambda item: item.heuristic(timestamp), reverse=True))[:200]
 
         # print("workers", worker_pool)
